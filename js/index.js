@@ -20,10 +20,12 @@
 *************************** */
 
 window.addEventListener('DOMContentLoaded', () => {
+  let quizOver = 0;
   const start = document.querySelector('#start');
   start.addEventListener('click', function (e) {
     document.querySelector('#quizBlock').style.display = 'block';
     start.style.display = 'none';
+    setTimer();
   });
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
@@ -40,9 +42,20 @@ window.addEventListener('DOMContentLoaded', () => {
       a: 3,
     },
     {
-      q: 'What is the capital of Australia',
+      q: 'What is the capital of Australia?',
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
+    },
+
+    {
+      q: 'What is the capital of Srilanka?',
+      o: ['London', 'Colombo', 'Paris', 'Torrento'],
+      a: 1,
+    },
+    {
+      q: 'Where is eiffel tower located?',
+      o: ['Sydney', 'Canada', 'Paris', 'Germany'],
+      a: 2,
     },
   ];
 
@@ -62,10 +75,10 @@ window.addEventListener('DOMContentLoaded', () => {
       quizWrap.innerHTML = quizDisplay;
     });
   };
-
+  let score = 0;
   // Calculate the score
   const calculateScore = () => {
-    let score = 0;
+    //let score = 0;
     quizArray.map((quizItem, index) => {
       for (let i = 0; i < 4; i++) {
         //highlight the li if it is the correct answer
@@ -73,18 +86,60 @@ window.addEventListener('DOMContentLoaded', () => {
         let r = `radio_${index}_${i}`;
         liElement = document.querySelector('#' + li);
         radioElement = document.querySelector('#' + r);
+       
 
         if (quizItem.a == i) {
           //change background color of li element here
+          liElement.style.backgroundColor ="#80ff80";
         }
 
-        if (radioElement.checked) {
+        if (radioElement.checked  && quizItem.a ===i) {
           // code for task 1 goes here
+          score++;
         }
       }
     });
+    return score;
   };
-
+  // Display score
+  function displayScore(){
+    const scoreDiv = document.getElementById('score');
+    scoreDiv.innerHTML = `Your Score: ${score}`;
+  }
   // call the displayQuiz function
   displayQuiz();
+
+  // Event listener submit button
+ 
+  const submitButton = document.getElementById('btnSubmit');
+  submitButton.addEventListener('click', () =>{
+ submitButton.style.display = "none";
+  calculateScore();
+  displayScore();
+  quizOver =1;
+  });
+ 
+
+// Event listener for reset button
+const restButton = document.getElementById('btnReset'); 
+restButton.addEventListener ('click', () =>{
+location.reload();
+});
+
+//set timer
+let timeLeft = 30;
+let elem = document.getElementById("time");
+let timerId = setInterval(countdown, 1000);
+
+function countdown() {
+  if (timeLeft == -1) {
+    clearTimeout(timerId);
+    elem.innerHTML = "-- Time's up --";
+    calculateScore();
+  } else {
+    elem.innerHTML = timeLeft;
+    timeLeft--;
+  }
+}
+
 });
