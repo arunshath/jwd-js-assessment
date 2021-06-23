@@ -128,16 +128,17 @@ location.reload();
 
 //set timer
 let timeLeft = 30;
-let elem = document.getElementById("time");
+let element = document.getElementById("time");
 let timerId = setInterval(countdown, 1000);
 
 function countdown() {
   if (timeLeft == -1) {
     clearTimeout(timerId);
-    elem.innerHTML = "-- Time's up --";
+    element.innerHTML = "-- Time's up --";
+    submitButton.click();
     calculateScore();
   } else {
-    elem.innerHTML = timeLeft;
+    element.innerHTML = timeLeft;
     timeLeft--;
   }
 }
